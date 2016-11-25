@@ -371,11 +371,9 @@ translateVerb [] = []
 
 initialMacros :: Macros
 initialMacros = mempty
-	{ environments = Map.fromList
+	{environments = Map.fromList
 		[ ("ttfamily", Environment mempty mempty [])
-		, ("paras",    Environment mempty mempty []) ]
-	, commands = Map.fromList
-		[ ("gramSec", Command 2 "") ]}
+		, ("paras",    Environment mempty mempty []) ]}
 
 dontEval :: [Text]
 dontEval = map Text.pack $ bnfEnvs ++ words "drawing definition definitionx Cpp importgraphic bottomline capsep bigoh itemdescr grammarterm nontermdef defnx FlushAndPrintGrammar term caret indented enumeratea"
@@ -811,7 +809,7 @@ load14882 = do
 
 		extra <-
 			if c /= "grammar" then return ""
-			else replace "\\gramSec" "\\rSec[1]" . readFile "std-gram.ext"
+			else return ""
 
 		let r = parseFile macros (stuff ++ extra)
 
