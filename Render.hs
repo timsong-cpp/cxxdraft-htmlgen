@@ -381,6 +381,7 @@ instance Render Element where
 			render (RenderItem (enumCmd == "enumerate") . enumItems)
 		where
 			t = case enumCmd of
+				"enumeraten" -> "ol"
 				"enumeratea" -> "ol"
 				"enumerate" -> "ol"
 				"itemize" -> "ul"
