@@ -76,7 +76,7 @@ listOfFigures figs =
 tocHeader :: UTCTime -> Text -> Text
 tocHeader date commitUrl =
 	"Generated on " ++ Text.pack (formatTime defaultTimeLocale "%F" date)
-	++ " from the C++ standard's <a href='" ++ commitUrl ++ "'>draft LaTeX sources</a>"
+	++ " from the Ranges TS's <a href='" ++ commitUrl ++ "'>draft LaTeX sources</a>"
 	++ " by <a href='https://github.com/Eelis/cxxdraft-htmlgen'>cxxdraft-htmlgen</a>."
 	++ " This is <em>not</em> an ISO publication."
 	++ "<hr/>"
@@ -86,7 +86,7 @@ writeTocFile sfs draft@Draft{..} = do
 	putStrLn "  toc"
 	date <- getCurrentTime
 	writeFile (outputDir ++ "/index.html") $ applySectionFileStyle sfs $
-		fileContent "" "14882: Contents" $
+		fileContent "" "Ranges: Contents" $
 			xml "div" [("class", "tocHeader")] (tocHeader date commitUrl) ++
 			"<h1>Contents</h1>" ++
 			listOfTables (tables draft) ++

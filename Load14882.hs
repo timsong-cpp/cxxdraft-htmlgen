@@ -510,7 +510,8 @@ getCommitUrl = do
 	commit <- gitGetCommitRef
 	return $
 		( Text.replace "git@github.com:" "http://github.com/"
-		$ Text.replace ".git" "/commit/" url)
+		$ Text.replace ".git" "" url)
+                ++ "/commit/"
 		++ commit
 
 gitGetRemoteUrl :: IO Text
@@ -783,7 +784,7 @@ load14882 = do
 		. Text.pack . flip (subRegex (mkRegex "\\\\penalty[0-9]+")) "" . Text.unpack
 		. mconcat
 		. mapM readFile
-		["config.tex", "macros.tex", "tables.tex"]
+		["config.tex", "macros.tex", "tables.tex", "cxx.tex"]
 
 	putStrLn $ ("Loaded macros: " ++) $ unwords $ sort $
 		keys commands ++ (Text.unpack . keys environments)
@@ -791,12 +792,9 @@ load14882 = do
 	let
 		files :: [FilePath]
 		files = words $
-			"intro lex basic conversions expressions statements " ++
-			"declarations declarators classes derived access special " ++
-			"overloading templates exceptions preprocessor lib-intro " ++
-			"support diagnostics utilities strings locales containers " ++
-			"iterators algorithms numerics iostreams regex atomics threads " ++
-			"grammar limits compatibility future charname"
+			"intro statements lib-intro concepts " ++
+			"utilities iterators algorithms numerics " ++
+			"deprecated acknowledgements compatibility"
 
 	putStrLn "Loading chapters"
 	secs <- forM files $ \c -> do

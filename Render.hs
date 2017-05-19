@@ -41,7 +41,7 @@ import Util ((.), (++), replace, Text, xml, spanTag, anchor, Anchor(..), greekAl
 import LaTeXUtil (texFromArg)
 
 kill, literal :: [String]
-kill = ["clearpage", "renewcommand", "brk", "newcommand", "enlargethispage", "noindent", "indent", "vfill", "pagebreak", "topline", "xspace", "!", "linebreak", "caption", "capsep", "continuedcaption", "bottomline", "-", "hline", "rowsep", "hspace", "endlist", "cline", "itcorr", "label", "discretionary", "hfill", "space", "nocorr", "small", "endhead", "kill", "footnotesize"]
+kill = ["clearpage", "renewcommand", "brk", "newcommand", "enlargethispage", "noindent", "indent", "vfill", "pagebreak", "topline", "xspace", "!", "linebreak", "caption", "capsep", "continuedcaption", "bottomline", "-", "hline", "rowsep", "hspace", "endlist", "cline", "itcorr", "label", "discretionary", "hfill", "space", "nocorr", "small", "endhead", "kill", "footnotesize", "color"]
 literal = [" ", "#", "{", "}", "~", "%", ""]
 
 simpleMacros :: [(String, Text)]
@@ -72,9 +72,11 @@ simpleMacros =
 	, ("times"          , "&times;")
 	, ("&"              , "&amp;")
 	, ("$"              , "&#36;")
+        , ("S"              , "&sect;")
 	, ("backslash"      , "\\")
 	, ("textbackslash"  , "\\")
 	, ("textunderscore" , "_")
+        , ("textemdash"     , "&mdash;")
 	, ("colcol"         , "::")
 	, ("tilde"          , "~")
 	, ("hspace"         , " ")
@@ -111,7 +113,7 @@ simpleMacros =
 
 makeSpan, makeDiv, makeBnfTable, makeBnfPre :: [String]
 makeSpan = words "center"
-makeDiv = words "definition cvqual textit textnormal emph exitnote footnote terminal nonterminal mathit indented paras ttfamily TableBase table tabular longtable"
+makeDiv = words "definition cvqual textit textnormal emph exitnote footnote terminal nonterminal mathit indented paras ttfamily TableBase table tabular longtable quote flushright addedblock removedblock"
 makeBnfTable = words "bnfkeywordtab bnftab ncbnftab"
 makeBnfPre = words "bnf ncbnf simplebnf ncsimplebnf"
 
@@ -273,7 +275,7 @@ instance Render LaTeX where
 	    | e `elem` makeSpan            = spanTag (Text.pack e) . render t
 	    | e `elem` makeDiv             = xml "div" [("class", Text.pack e)] . render t
 	    | isComplexMath env            = return $ renderComplexMath env
-	    | otherwise                    = error $ "render: unexpected env " ++ e
+	    | otherwise                    = error $ "render: unexpected env " ++ e ++ (show t)
 
 instance Render Int where render = return . Text.pack . show
 
@@ -639,7 +641,7 @@ secnum href Section{sectionNumber=n,..} =
 		chap :: Text
 		chap
 			| chapter == NormalChapter = simpleRender (head ns)
-			| otherwise = Text.pack [['A'..] !! (head ns - 31)] -- todo
+			| otherwise = Text.pack [['A'..] !! (head ns - 12)] -- todo
 
 abbreviations :: Section -> [LaTeX]
 abbreviations Section{..} = abbreviation : concatMap abbreviations subsections

@@ -98,7 +98,7 @@ sectionHeader hLevel s@Section{..} secnumHref abbr_ref = h hLevel $
 	simpleRender abbr_ref{aClass = "abbr_ref", aText = squareAbbr abbreviation}
 
 writeFiguresFile :: SectionFileStyle -> [Figure] -> IO ()
-writeFiguresFile sfs figs = writeSectionFile "fig" sfs "14882: Figures" $
+writeFiguresFile sfs figs = writeSectionFile "fig" sfs "Ranges: Figures" $
 	"<h1>List of Figures <a href='SectionToToc/fig' class='abbr_ref'>[fig]</a></h1>"
 	++ mconcat (r . figs)
 	where
@@ -111,7 +111,7 @@ writeFiguresFile sfs figs = writeSectionFile "fig" sfs "14882: Figures" $
 			++ renderFig True f
 
 writeTablesFile :: SectionFileStyle -> Draft -> IO ()
-writeTablesFile sfs draft = writeSectionFile "tab" sfs "14882: Tables" $
+writeTablesFile sfs draft = writeSectionFile "tab" sfs "Ranges: Tables" $
 	"<h1>List of Tables <a href='SectionToToc/tab' class='abbr_ref'>[tab]</a></h1>"
 	++ mconcat (r . tables draft)
 	where
@@ -122,7 +122,7 @@ writeTablesFile sfs draft = writeSectionFile "tab" sfs "14882: Tables" $
 			++ renderTab True t (RenderContext Nothing draft False False False "")
 
 writeFootnotesFile :: SectionFileStyle -> Draft -> IO ()
-writeFootnotesFile sfs draft = writeSectionFile "footnotes" sfs "14882: Footnotes" $
+writeFootnotesFile sfs draft = writeSectionFile "footnotes" sfs "Ranges: Footnotes" $
 	"<h1>List of Footnotes</h1>"
 	++ mconcat (r . footnotes draft)
 	where
@@ -130,7 +130,7 @@ writeFootnotesFile sfs draft = writeSectionFile "footnotes" sfs "14882: Footnote
 		r fn = simpleRender fn
 
 writeFullFile :: SectionFileStyle -> Draft -> IO ()
-writeFullFile sfs draft = writeSectionFile "full" sfs "14882" $
+writeFullFile sfs draft = writeSectionFile "full" sfs "Ranges" $
 	mconcat $ applySectionFileStyle sfs . fst .
 		renderSection (RenderContext Nothing draft False False False "") Nothing True . chapters draft
 
@@ -147,4 +147,4 @@ writeSectionFiles sfs draft = do
 writeIndexFiles :: SectionFileStyle -> Index -> IO ()
 writeIndexFiles sfs index = forM_ (Map.toList index) $ \(Text.unpack -> cat, i) -> do
 	putStrLn $ "  " ++ cat
-	writeSectionFile cat sfs ("14882: " ++ indexCatName cat) $ h 1 (indexCatName cat) ++ simpleRender i
+	writeSectionFile cat sfs ("Ranges: " ++ indexCatName cat) $ h 1 (indexCatName cat) ++ simpleRender i
