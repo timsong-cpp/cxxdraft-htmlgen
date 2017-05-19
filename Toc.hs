@@ -53,26 +53,6 @@ listOfTables ts =
 				aClass = "abbr_ref"}
 			++ "<br>"
 
-listOfFigures :: [Figure] -> Text
-listOfFigures figs =
-	xml "div" [("id", "fig")] $
-		h 2 ("List of Figures "
-			++ simpleRender abbrAnchor{aHref="#fig", aClass="folded_abbr_ref"}
-			++ simpleRender abbrAnchor{aHref="TocToSection/fig", aClass="unfolded_abbr_ref"})
-		++ xml "div" [("class", "tocChapter")] (mconcat (figureItem . figs))
-	where
-		abbrAnchor = anchor{aText="[fig]"}
-		figureItem :: Figure -> Text
-		figureItem Figure{..} =
-			spanTag "secnum" (simpleRender figureNumber)
-			++ simpleRender figureName
-			++ simpleRender anchor{
-				aHref  = "TocToSection/" ++ url (abbreviation figureSection)
-				         ++ "#" ++ url figureAbbr,
-				aText  = squareAbbr figureAbbr,
-				aClass = "abbr_ref"}
-			++ "<br>"
-
 tocHeader :: UTCTime -> Text -> Text
 tocHeader date commitUrl =
 	"Generated on " ++ Text.pack (formatTime defaultTimeLocale "%F" date)
@@ -90,8 +70,7 @@ writeTocFile sfs draft@Draft{..} = do
 			xml "div" [("class", "tocHeader")] (tocHeader date commitUrl) ++
 			"<h1>Contents</h1>" ++
 			listOfTables (tables draft) ++
-			listOfFigures (figures draft) ++
 			mconcat (tocChapter . chapters) ++
 			mconcat (h 2
 				. (\cat -> simpleRender anchor{aHref="TocToSection/" ++ cat, aText=indexCatName cat})
-				. ["generalindex", "libraryindex", "impldefindex"])
+				. ["generalindex", "libraryindex"])
