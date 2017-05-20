@@ -214,6 +214,8 @@ instance Render LaTeX where
 				Just t | not ([abbr] `elem` (tableAbbrs . tables page)) -> linkToRemoteTable t
 				_ -> anchor{aHref = "#" ++ url abbr}
 		_ -> linkToSection SectionToSection abbr){aText = squareAbbr abbr}
+	render (TeXComm "stdcxxref" [FixArg abbr]) = \RenderContext{..} -> simpleRender (
+		linkToStdSection SectionToSection abbr){aText = squareAbbr abbr}
 	render (TeXComm "nontermdef" [FixArg (TeXRaw s)]) = render anchor{aId = "nt:"++s, aText = s++":"}
 	render (TeXComm "grammarterm_" ((FixArg (TeXRaw section)) : (FixArg (TeXRaw name)) : otherArgs)) =
 		\sec ->
@@ -616,6 +618,11 @@ data Link = TocToSection | SectionToToc | SectionToSection | ToImage
 linkToSection :: Link -> LaTeX -> Anchor
 linkToSection link abbr = anchor
 	{	aHref = Text.pack (show link) ++ "/" ++ url abbr
+	,	aText = squareAbbr abbr }
+
+linkToStdSection :: Link -> LaTeX -> Anchor
+linkToStdSection link abbr = anchor
+	{	aHref = Text.pack (show link) ++ "/../n4140/" ++ url abbr
 	,	aText = squareAbbr abbr }
 
 url :: LaTeX -> Text
