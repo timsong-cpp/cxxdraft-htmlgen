@@ -96,6 +96,8 @@ simpleMacros =
 	, ("lceil"          , "⌈")
 	, ("rceil"          , "⌉")
 	, (";"              , " ")
+        , ("searrow"        , "&#x2198;")
+        , ("nearrow"        , "&#x2197;")
 	, ("min"            , "<span class=\"mathrm\">min</span>")
 	, ("max"            , "<span class=\"mathrm\">max</span>")
 	, ("bmod"           , "<span class=\"mathrm\">mod</span>")
