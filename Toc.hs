@@ -56,7 +56,7 @@ listOfTables ts =
 tocHeader :: UTCTime -> Text -> Text
 tocHeader date commitUrl =
 	"Generated on " ++ Text.pack (formatTime defaultTimeLocale "%F" date)
-	++ " from the Ranges TS's <a href='" ++ commitUrl ++ "'>draft LaTeX sources</a>"
+	++ " from the Networking TS's <a href='" ++ commitUrl ++ "'>draft LaTeX sources</a>"
 	++ " by <a href='https://github.com/Eelis/cxxdraft-htmlgen'>cxxdraft-htmlgen</a>."
 	++ " This is <em>not</em> an ISO publication."
 	++ "<hr/>"
@@ -66,11 +66,11 @@ writeTocFile sfs draft@Draft{..} = do
 	putStrLn "  toc"
 	date <- getCurrentTime
 	writeFile (outputDir ++ "/index.html") $ applySectionFileStyle sfs $
-		fileContent "" "Ranges: Contents" $
+		fileContent "" "Networking: Contents" $
 			xml "div" [("class", "tocHeader")] (tocHeader date commitUrl) ++
 			"<h1>Contents</h1>" ++
 			listOfTables (tables draft) ++
 			mconcat (tocChapter . chapters) ++
 			mconcat (h 2
 				. (\cat -> simpleRender anchor{aHref="TocToSection/" ++ cat, aText=indexCatName cat})
-				. ["generalindex", "libraryindex"])
+				. ["generalindex", "libraryindex", "impldefindex"])

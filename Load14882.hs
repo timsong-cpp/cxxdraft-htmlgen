@@ -256,9 +256,9 @@ makeRowCells latex =
 loadFigure :: Text -> Text
 loadFigure f =
 		rmIds $ snd $ Text.breakOn "<svg" $ Text.pack
-			$ unsafePerformIO (readProcess "dot" ["-Tsvg", "-Gbgcolor=transparent", p] "")
+			$ unsafePerformIO (readProcess "inkscape" ["--without-gui", "--export-plain-svg=/dev/stdout", "-f", p] "")
 	where
-		p = Text.unpack $ Text.replace ".pdf" ".dot" f
+		p = Text.unpack f
 		r = mkRegex "<g id=\"[^\"]*\"" 
 		rmIds = Text.pack . flip (subRegex r) "<g" . Text.unpack
 			-- Without rmIds, if a page has more than one figure, it will
@@ -792,9 +792,10 @@ load14882 = do
 	let
 		files :: [FilePath]
 		files = words $
-			"intro statements lib-intro concepts " ++
-			"utilities iterators algorithms numerics " ++
-			"deprecated acknowledgements compatibility"
+                        "intro references definitions conformance namespaces plans " ++
+                        "featuretest description errorreporting summary convenience " ++
+                        "forward async basicioservices timers buffers bufferstreams " ++
+                        "sockets socketstreams socketalgorithms internetprotocol"
 
 	putStrLn "Loading chapters"
 	secs <- forM files $ \c -> do

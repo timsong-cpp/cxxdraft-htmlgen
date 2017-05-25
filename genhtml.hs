@@ -27,7 +27,7 @@ main = do
 	cwd <- getCurrentDirectory
 	CmdLineArgs{..} <- readCmdLineArgs . getArgs
 
-	setCurrentDirectory $ repo ++ ""
+	setCurrentDirectory $ repo ++ "/src"
 	draft@Draft{..} <- load14882
 
 	setCurrentDirectory cwd
