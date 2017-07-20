@@ -793,7 +793,7 @@ load14882 = do
 		files :: [FilePath]
 		files = words $
 			"intro statements lib-intro concepts " ++
-			"utilities iterators algorithms numerics " ++
+			"utilities iterators ranges-lib algorithms numerics " ++
 			"deprecated acknowledgements compatibility"
 
 	putStrLn "Loading chapters"
